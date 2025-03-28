@@ -1,5 +1,5 @@
 if game.CoreGui:FindFirstChild("KHui_FTF") then
-	warn("Leo Scripts Has Already Ran, Expect A Lot Of Bugs Or Glitches.")
+	warn("Koala Scripts Has Already Ran, Expect A Lot Of Bugs Or Glitches.")
 	game.CoreGui.KHui_FTF:Destroy()
 	task.wait(1)
 end
@@ -27,7 +27,7 @@ local PlrJumpPower = ExtraTab:CreateInput("TextBox", "Player Jump Power.", "PlrJ
 local OnRound = Instance.new("BoolValue", UI.Instance)
 
 -- # MODIFY UI
-UI.Title.Text = "LeozeraHUB - Flee The Facility J+L"
+UI.Title.Text = "Leozera HUB - Quero Fotinha pra madrugada Rs"
 
 -- # Check ESP's Function
 function CheckPlrESP()
@@ -140,7 +140,7 @@ end)
 while wait() do
 	-- # END
 	if not game.CoreGui:FindFirstChild("KHui_FTF") then
-		warn("Leozz Script: ENDED.")
+		warn("Koala Script: ENDED.")
 		break
 	end
 	
@@ -151,4 +151,51 @@ while wait() do
 		if v.Name == "ComputerTable" then
 			if not v:FindFirstChild("ComputerTableESP_KH") and ESP_Computers.Value == true then
 				local ComputerTableESP = Instance.new("Highlight", v)
-				ComputerTableESP.Name = "ComputerTa
+				ComputerTableESP.Name = "ComputerTableESP_KH"
+				ComputerTableESP.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+				ComputerTableESP.FillColor = v:WaitForChild("Screen").Color
+			elseif ESP_Computers.Value == true then
+				v.ComputerTableESP_KH.FillColor = v:WaitForChild("Screen").Color
+			elseif  v:FindFirstChild("ComputerTableESP_KH") then
+				v.ComputerTableESP_KH:Destroy()
+			end
+		end
+	end
+	
+	-- # ANTI PC ERROR
+	if AntiPCError.Value then
+		wait()
+		game.ReplicatedStorage.RemoteEvent:FireServer("SetPlayerMinigameResult", true)
+	end
+	
+	-- # FULL BRIGHT
+	if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+		if FullBright.Value == true and not game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("KH_FullBright") then
+			local NewLight = Instance.new("PointLight", game.Players.LocalPlayer.Character.HumanoidRootPart)
+			NewLight.Name = "KH_FullBright"
+			NewLight.Range = math.huge
+			NewLight.Brightness = 2.5
+		elseif FullBright.value == false and game.Players.LocalPlayer.Character.HumanoidRootPart:FindFirstChild("KH_FullBright") then
+			game.Players.LocalPlayer.Character.HumanoidRootPart.KH_FullBright:Destroy()
+		end
+	end
+	
+	-- # PLR SPEED & PLR JUMP POWER
+	wait()
+	if tonumber(PlrSpeed.Text) and game.Players.LocalPlayer.Character then
+		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = tonumber(PlrSpeed.Text)
+	elseif tonumber(PlrJumpPower.Text)  and game.Players.LocalPlayer.Character then
+		game.Players.LocalPlayer.Character.Humanoid.UseJumpPower = true
+		game.Players.LocalPlayer.Character.Humanoid.JumpPower = tonumber(PlrJumpPower.Text)
+	elseif game.Players.LocalPlayer.Character then
+		game.Players.LocalPlayer.Character.Humanoid.UseJumpPower = true
+		game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+	end
+	
+	-- # ON ROUND DETECTOR
+	if GotComputers > 0 then
+		OnRound.Value = true
+	else
+		OnRound.Value = false
+	end
+end
